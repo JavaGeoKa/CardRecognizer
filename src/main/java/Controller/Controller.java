@@ -15,7 +15,11 @@ public class Controller {
         Files.walk(Paths.get(DIR_PATH))
                 .filter(Files::isRegularFile)
                 .forEach(i -> {
-                    System.out.println(i + " -> " + Recognizer.cardCount(i.toString()));
+                    try {
+                        System.out.println(i + " -> " + Recognizer.cardCount(i.toString()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     countFiles++;
 
                 });
