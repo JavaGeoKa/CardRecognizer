@@ -16,14 +16,16 @@ public class Controller {
                 .filter(Files::isRegularFile)
                 .forEach(i -> {
                     try {
-                        System.out.println(i + " -> " + Recognizer.cardCount(i.toString()));
+                        System.out.println(i + " -> " + Recognizer.cardGet(i.toString()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     countFiles++;
 
                 });
-        System.out.println(countFiles);
+        System.out.println("Handle files -> " + countFiles );
+        Recognizer.cardSave();
+        System.out.println("All cards saved");
 
 
 
