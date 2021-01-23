@@ -31,7 +31,7 @@ public class Recognizer {
             BufferedImage img = ImageIO.read(new File(path));
 
             for (cardPlace = 0; cardPlace < 5; cardPlace++) {
-                System.out.println("Start with " + positions[cardPlace]);
+//                System.out.println("Start with " + positions[cardPlace]);
                 cards.add(img.getSubimage(positions[cardPlace], y,54, 80));
 
             }

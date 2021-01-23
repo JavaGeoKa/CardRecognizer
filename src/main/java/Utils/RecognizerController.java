@@ -35,40 +35,39 @@ public class RecognizerController {
             cards.add(img.getSubimage(positions[cardPlace], y,52, 79));
         }
 
+        System.out.println("Cards in cards -> " + cards.size());
+
+
+//        write in file
         cards.forEach(i -> {
+            try {
+                //get background
+                getBackground(i);
+                //write file
+                ImageIO.write(i, "png", new File("./cards/file" + cards.indexOf(i)));
 
-            //поисковик возвращает строку с названием карты
-            Finder.getCardName(i);
-
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
 
-
-
-
-
-
-
-//        cards.forEach(i -> {
-//            try {
-//                ImageIO.write(i, "png", new File("./cards/file" + cards.indexOf(i)));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
-
-
     }
 
+    private static boolean getBackground(BufferedImage i) {
 
-    private static boolean recognizeCard(int pos, BufferedImage img) {
-        //проверяем есть ли карта по данному адресу
+            for (int k = 0; k < i.getHeight();k ++) {
+                for (int l = 0; l < i.getWidth(); l ++) {
+                    if (i.getRGB(k, l) != -1 || i.getRGB(k, l) != -8882056 ) {
 
-        for (int z = pos; z < pos + 53; z ++) {
-            System.out.println(img.getRGB(z,y));
-//            if (img.getRGB(z, y) != -1 || (img.getRGB(z, y) != -8882056)) {
-//                return false;
+                    }
+
+                }
+
             }
         return true;
     }
+
+
+
 }
