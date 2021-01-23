@@ -1,4 +1,6 @@
-package Controller;
+package Utils;
+
+import Controller.Finder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -19,15 +21,8 @@ public class RecognizerController {
     static List<BufferedImage> cards = new ArrayList<>();
 
 
-    static int y = 590;
-
-    static int x1 = 148;     //202      -54
-    static int x2 = 219;     //273      -54
-    static int x3 = 291;     //345      -54
-    static int x4 = 363;     //417      -54
-    static int x5 = 435;     //487      -54
-
-    static int[] positions = {x1, x2, x3, x4, x5};
+    static int y = 591;
+    static int[] positions = {149, 220, 292, 364, 436};
 
     static int cardPlace = 0;
     static int cardCount = 0;
@@ -37,19 +32,30 @@ public class RecognizerController {
 
         BufferedImage img = ImageIO.read(new File(PATH));
         for (cardPlace = 0; cardPlace < 5; cardPlace++) {
-            System.out.println("Start with " + positions[cardPlace]);
-            cards.add(img.getSubimage(positions[cardPlace], y,54, 80));
-
+            cards.add(img.getSubimage(positions[cardPlace], y,52, 79));
         }
 
-        System.out.println(cards.size());
         cards.forEach(i -> {
-            try {
-                ImageIO.write(i, "png", new File("./cards/file" + cards.indexOf(i)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            //поисковик возвращает строку с названием карты
+            Finder.getCardName(i);
+
         });
+
+
+
+
+
+
+
+
+//        cards.forEach(i -> {
+//            try {
+//                ImageIO.write(i, "png", new File("./cards/file" + cards.indexOf(i)));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
 
 
     }
