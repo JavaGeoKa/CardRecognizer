@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class PrepareController {
+public class CardController {
 
     //ControllerSettings
     static int y = 591;
@@ -64,7 +64,6 @@ public class PrepareController {
                 });
         System.out.println("Black cards loaded: " + blackCards.size());
 
-
         //загрyжаем скриншот экрана
         img = ImageIO.read(new File(PATH));
         for (cardPlace = 0; cardPlace < 5; cardPlace++) {
@@ -78,11 +77,18 @@ public class PrepareController {
 
 
         //Здесь нужно начать сравнивать два изображения
-        currentCards.entrySet().stream().forEach( e -> {
+        //currentCards -> redCard
+        System.out.println("Begin comparing");
+
+
+
+        currentCards.entrySet().stream().limit(1).forEach( e -> {
            if (e.getValue() == "black") {
-               //стравнить с блек
+               //black compare
            } else if (e.getValue() == "red") {
-               //сравнить с ред
+               //red compare
+               redCompare(e.getKey());
+
            }
         });
 
@@ -91,6 +97,17 @@ public class PrepareController {
 
     }
 
+    //сравниваю изображение с красными картами
+    private static void redCompare(BufferedImage key) {
+        redCards.entrySet().stream().forEach(rc -> {
+            try {
+                ComparatorImages.compare(rc.getKey(),key);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
 
 
     //определение цвета карты
