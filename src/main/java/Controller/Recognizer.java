@@ -6,53 +6,59 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Recognizer {
+    static List<BufferedImage> minimalCard = new ArrayList<>();
+    static List<Integer> allBackgroundes = new ArrayList<>();
+    static List<Integer> backgroundes = new ArrayList<>();
 
-    static List<BufferedImage> cards = new ArrayList<>();
-    static int y = 590;
-    static int x1 = 148;     //202      -54
-    static int x2 = 219;     //273      -54
-    static int x3 = 291;     //345      -54
-    static int x4 = 363;     //417      -54
-    static int x5 = 435;     //487      -54
-    static int[] positions = {x1, x2, x3, x4, x5};
+    static BufferedImage img;
+
+    static int y = 591;
+    static int[] positions = {149, 220, 292, 364, 436};
     static int cardPlace = 0;
-    static int cardCount = 0;
 
 
+    //3 вырезаю из ссылки карты
+    public static void cutCards(String currentImage) throws IOException {
+        img = ImageIO.read(new File(currentImage));
+        for (cardPlace = 0; cardPlace < 5; cardPlace++) {
+//            minimalCard.add(img.getSubimage(positions[cardPlace], y,29, 45));
+            minimalCard.add(img.getSubimage(positions[cardPlace], y,52, 79));
+        }
+        cardPlace = 0;
 
-    public Recognizer() throws IOException {
+        //minimalCards calculate backgroundes
+        minimalCard.forEach(item -> calculateBackgroundes(item));
     }
 
-
-        static Integer cardGet(String path) throws IOException {
-            System.out.println(cardCount);
-            BufferedImage img = ImageIO.read(new File(path));
-
-            for (cardPlace = 0; cardPlace < 5; cardPlace++) {
-//                System.out.println("Start with " + positions[cardPlace]);
-                cards.add(img.getSubimage(positions[cardPlace], y,54, 80));
+    private static void calculateBackgroundes(BufferedImage item) {
+        int backgroundQuantities = 0;
+        for (int k = 0; k < item.getHeight(); k++) {
+            for (int l = 0; l < item.getWidth(); l++) {
+                if (item.getRGB(l, k) == -1 || item.getRGB(l, k) == -8882056) {
+                    backgroundQuantities ++;
+                }
 
             }
-            return cardCount;
-
+        }
+        if (backgroundQuantities != 0) {
+            backgroundes.add(backgroundQuantities);
+        }
     }
 
-        static void cardSave() {
-            System.out.println(cards.size());
-            cards.forEach(i -> {
-                try {
-                    ImageIO.write(i, "png", new File("./cards/file" + cards.indexOf(i)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-    }
+    public static void saveCardtoFile() {
+        minimalCard.forEach(i -> {
+            try {
+                //write file
+                ImageIO.write(i, "png", new File("./cards/minfile" + minimalCard.indexOf(i)));
 
-
-
-
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
 
     }
+}
