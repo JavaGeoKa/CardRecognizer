@@ -8,10 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PrepareController {
 
@@ -27,16 +24,13 @@ public class PrepareController {
     private static final String DIR_PATH_BLACK = "/home/g/IdeaProjects/CardRecognizer/cards/black";
 
     //тест файл 5 {тк, ч, тч, к, чоб }  +
-//    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_102328.773_0x1FE201D8.png";
+    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_102328.773_0x1FE201D8.png";
 //    тест файл 4  {тч, ч, кроб, чоб} +
 //    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_111814.694_0x1CFF023A.png";
     //тест файл 3  {ч, ч, к}
-    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_091220.884_0x0EDA02B0.png";
+//    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_091220.884_0x0EDA02B0.png";
 
-
-    static Map<BufferedImage, String> currentCards = new HashMap<>();
-
-
+    static Map<BufferedImage, String> currentCards = new LinkedHashMap<>();
     static Map<BufferedImage, String> redCards = new HashMap<>();
     static Map<BufferedImage, String> blackCards = new HashMap<>();
 
@@ -84,10 +78,13 @@ public class PrepareController {
 
 
         //Здесь нужно начать сравнивать два изображения
-//        currentCards.forEach( i -> {
-
-
-//        });
+        currentCards.entrySet().stream().forEach( e -> {
+           if (e.getValue() == "black") {
+               //стравнить с блек
+           } else if (e.getValue() == "red") {
+               //сравнить с ред
+           }
+        });
 
 
 
