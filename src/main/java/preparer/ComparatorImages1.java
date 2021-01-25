@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
-public class ComparatorImages {
+public class ComparatorImages1 {
     public static void compare(BufferedImage img1, BufferedImage img2) throws Exception {
         int w1 = img1.getWidth();
         int w2 = img2.getWidth();

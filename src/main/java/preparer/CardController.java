@@ -1,7 +1,5 @@
 package preparer;
 
-import Controller.Trimmer;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,16 +21,17 @@ public class CardController {
     private static final String DIR_PATH_RED = "/home/g/IdeaProjects/CardRecognizer/cards/red";
     private static final String DIR_PATH_BLACK = "/home/g/IdeaProjects/CardRecognizer/cards/black";
 
-    //тест файл 5 {тк, ч, тч, к, чоб }  +
-    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_102328.773_0x1FE201D8.png";
+    //тест файл 5 {тк, ч, тч, к, чоб }   7d, Jc, 6s, Ah, 5s
+//    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_102328.773_0x1FE201D8.png";
 //    тест файл 4  {тч, ч, кроб, чоб} +
-//    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_111814.694_0x1CFF023A.png";
+    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_111814.694_0x1CFF023A.png";
     //тест файл 3  {ч, ч, к}
 //    private static final String PATH = "/home/g/Downloads/java_test_task/imgs/20180821_091220.884_0x0EDA02B0.png";
 
     static Map<BufferedImage, String> currentCards = new LinkedHashMap<>();
     static Map<BufferedImage, String> redCards = new HashMap<>();
     static Map<BufferedImage, String> blackCards = new HashMap<>();
+    static TreeMap<Double, String> differences = new TreeMap<>();
 
     static BufferedImage img;
     static BufferedImage subImg;
@@ -80,32 +79,60 @@ public class CardController {
         //currentCards -> redCard
         System.out.println("Begin comparing");
 
+        StringBuilder answer = new StringBuilder();
 
-
-        currentCards.entrySet().stream().limit(1).forEach( e -> {
+        currentCards.entrySet().stream().limit(5).forEach( e -> {
            if (e.getValue() == "black") {
                //black compare
+               answer.append(blackCompare(e.getKey()));
            } else if (e.getValue() == "red") {
-               //red compare
-               redCompare(e.getKey());
-
+               //red compare возвращает название карты с минимальной разницей
+               answer.append(redCompare(e.getKey()));
            }
         });
+
+        //распечатываем названия
+        System.out.println(answer);
+        answer.setLength(0);
+
+
+
 
 
 
 
     }
 
-    //сравниваю изображение с красными картами
-    private static void redCompare(BufferedImage key) {
-        redCards.entrySet().stream().forEach(rc -> {
+    //сравниваю изображение с черными картами
+    private static String blackCompare(BufferedImage key) {
+        differences.clear();
+        //добавить разницу в мепу
+        blackCards.entrySet().stream().forEach(bc -> {
             try {
-                ComparatorImages.compare(rc.getKey(),key);
+                differences.put(ComparatorImages2.compare(bc.getKey(),key), bc.getValue());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
+        //возвращаем название карты
+        return differences.firstEntry().getValue();
+
+    }
+
+
+    //сравниваю изображение с красными картами
+    private static String redCompare(BufferedImage key) {
+        differences.clear();
+        //добавить разницу в мепу
+        redCards.entrySet().stream().forEach(rc -> {
+            try {
+                differences.put(ComparatorImages2.compare(rc.getKey(),key), rc.getValue());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        //возвращаем название карты
+        return differences.firstEntry().getValue();
 
     }
 
